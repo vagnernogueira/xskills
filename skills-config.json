@@ -1,18 +1,18 @@
 [
   {
-    "source_repo": "git@github.com:upstash/context7.git",
+    "source_repo": "https://github.com/upstash/context7.git",
     "branch": "master",
     "source_path": "skills/context7-cli",
     "target_dir": "skills-agregadas/context7-cli"
   },
   {
-    "source_repo": "git@github.com:upstash/context7.git",
+    "source_repo": "https://github.com/upstash/context7.git",
     "branch": "master",
     "source_path": "skills/find-docs",
     "target_dir": "skills-agregadas/find-docs"
   },
   {
-    "source_repo": "git@github.com:shadcn-ui/ui.git",
+    "source_repo": "https://github.com/shadcn-ui/ui.git",
     "branch": "main",
     "source_path": "skills/shadcn",
     "target_dir": "skills-agregadas/busca-web"
