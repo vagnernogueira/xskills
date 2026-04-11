@@ -16,7 +16,7 @@
     "branch": "main",
     "source_path": "skills/shadcn",
     "target_dir": "skills-agregadas/shadcn"
-  }
+  },
   {
     "source_repo": "https://github.com/anthropics/skills.git",
     "branch": "main",
