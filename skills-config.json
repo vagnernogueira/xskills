@@ -15,6 +15,6 @@
     "source_repo": "https://github.com/shadcn-ui/ui.git",
     "branch": "main",
     "source_path": "skills/shadcn",
-    "target_dir": "skills-agregadas/busca-web"
+    "target_dir": "skills-agregadas/shadcn"
   }
 ]
