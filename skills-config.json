@@ -3,24 +3,24 @@
     "source_repo": "https://github.com/upstash/context7.git",
     "branch": "master",
     "source_path": "skills/context7-cli",
-    "target_dir": "skills-agregadas/context7-cli"
+    "target_dir": "_docs/ia-context/core/skills/context7-cli"
   },
   {
     "source_repo": "https://github.com/upstash/context7.git",
     "branch": "master",
     "source_path": "skills/find-docs",
-    "target_dir": "skills-agregadas/find-docs"
+    "target_dir": "_docs/ia-context/core/skills/find-docs"
   },
   {
     "source_repo": "https://github.com/shadcn-ui/ui.git",
     "branch": "main",
     "source_path": "skills/shadcn",
-    "target_dir": "skills-agregadas/shadcn"
+    "target_dir": "_docs/ia-context/core/skills/shadcn"
   },
   {
     "source_repo": "https://github.com/anthropics/skills.git",
     "branch": "main",
     "source_path": "skills/skill-creator",
-    "target_dir": "skills-agregadas/skill-creator"
+    "target_dir": "_docs/ia-context/core/skills/skill-creator"
   }
 ]
