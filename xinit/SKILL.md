@@ -1,11 +1,20 @@
 ---
 name: xinit
-description: Configura todos os players de IA em um projeto que já adota a estrutura ia-context. Use esta skill quando o usuário invocar /xinit ou pedir para inicializar/configurar os players de IA (Claude Code, Gemini, Copilot, OpenAgents, OpenCode) em um projeto. A skill cria symlinks e dot folders para cada player suportado, replicando o padrão canônico da estrutura ia-context.
+description: >-
+   Configura os players de IA de um projeto que já adota a estrutura ia-context.
+   Use quando o usuário invocar /xinit ou pedir para inicializar, configurar ou
+   reinstalar Claude Code, Gemini, Copilot, OpenAgents ou OpenCode no projeto,
+   especialmente quando a demanda mencionar os symlinks, dot folders ou
+   comandos-base da estrutura canônica.
 ---
 
 # xinit — Inicialização Multi-Player de IA
 
 Configura automaticamente todos os players de IA suportados em um projeto que já possui a estrutura `ia-context`.
+
+## Quando usar esta skill
+
+Use esta skill somente quando o projeto já tiver a estrutura `ia-context` e o objetivo for criar ou validar a configuração inicial dos players suportados.
 
 ## Pré-condições obrigatórias
 

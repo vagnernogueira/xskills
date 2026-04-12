@@ -1,16 +1,20 @@
 ---
 name: documentation-blueprint
-description: Aplica blueprint de documentação de forma agnóstica para estruturar, revisar e gerenciar documentação técnica por ondas.
+description: >-
+  Estrutura, revisa e gerencia documentação técnica por blueprint. Use quando
+  o usuário pedir para bootstrapar docs, auditar conformidade documental ou
+  abrir, evoluir ou encerrar ondas de documentação, inclusive quando a tarefa
+  vier descrita como organizar, padronizar ou revisar a documentação do projeto.
 ---
 
 # Documentation Blueprint
 
-## When to use this skill
+## Quando usar esta skill
 
 Use esta skill quando a demanda envolver documentação técnica do projeto e for necessário:
 
 - estruturar documentação inicial (bootstrap),
-- revisar conformidade e qualidade (review),
+- revisar conformidade, qualidade e consistência de links (review),
 - gerenciar evolução por ondas (wave-management).
 
 Gatilhos comuns:

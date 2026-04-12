@@ -1,11 +1,16 @@
 ---
 name: generate-demand
-description: Converte texto bruto em demanda estruturada, escolhe template por complexidade e gera arquivo em agent-workspace/planejamento.
+description: >-
+   Converte texto bruto em uma demanda estruturada em Markdown, escolhe o
+   template adequado e gera o arquivo em agent-workspace/planejamento/. Use
+   quando o usuário pedir para transformar notas soltas, briefings incompletos
+   ou pedidos informais em uma demanda formal, inclusive com frases como "faça
+   uma demanda", "estruture isso" ou "organize o pedido".
 ---
 
 # Generate Demand
 
-## When to use this skill
+## Quando usar esta skill
 
 Use esta skill quando a entrada vier em texto livre (curto, direto ou desorganizado) e você precisar gerar uma demanda formal em Markdown para execução por IA.
 
