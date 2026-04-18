@@ -45,6 +45,8 @@
 - Extrair a marcação para o novo componente preservando a estrutura visual, os utilitários existentes e o padrão já adotado em `EditorToolbar.vue`.
 - Substituir o bloco inline em `Editor.vue`, conectar o novo componente e validar que o comportamento responsivo e o evento `edit-profile` permanecem iguais.
 
+## Memorial de execução
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `refactor(editor): extrai header para componente dedicado`

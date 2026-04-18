@@ -57,6 +57,10 @@ Preencher antes de usar este template:
 
 [análise | implementação | revisão]
 
+## Memorial de execução
+
+- Resumo da execução + lista de arquivos alterados + impactos identificados ou esperados + validações executadas + validações recomendadas
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `[feat|fix|chore|refactor](escopo): descrição curta da alteração final`

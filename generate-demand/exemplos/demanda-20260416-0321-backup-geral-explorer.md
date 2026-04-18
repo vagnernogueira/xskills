@@ -101,6 +101,8 @@ Permitir que o usuário exporte, a partir do Explorer, um backup completo dos do
 
 implementação
 
+## Memorial de execução
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `feat(explorer): adiciona backup geral de documentos em zip`

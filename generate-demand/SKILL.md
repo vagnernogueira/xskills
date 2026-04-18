@@ -2,14 +2,16 @@
 name: generate-demand
 description: >-
    Converte texto bruto em uma demanda estruturada em Markdown, escolhe o
-   template adequado e gera o arquivo em agent-workspace/planejamento/. Use
+   template adequado e gera o arquivo em `agent-workspace/`. Use
    quando o usuário pedir para transformar notas soltas, briefings incompletos
    ou pedidos informais em uma demanda formal, inclusive com frases como "faça
-   uma demanda", "estruture isso" ou "organize o pedido". Como a seção de
-   planejamento da execução é canônica em todos os templates, a skill deve
-   encaminhar o preenchimento ou a revisão dessa etapa para a skill
-   `demand-execution-planning`. Quando houver seção de sugestão de commit, a
-   skill deve encaminhar essa etapa para `conventional-commits`.
+   uma demanda", "estruture isso" ou "organize o pedido". A skill deve
+   encaminhar o preenchimento ou a revisão da sessão de "Planejamento da execução"
+   para a skill `demand-execution-planning`. Para a seção `Memorial de execução` 
+   a skill deve deixá-la em branco na geração inicial e instruir o modelo para
+   preenchimento apenas ao final do atendimento ou da execução da demanda.
+   Quando à seção de sugestão de commit, a skill deve encaminhar essa
+   etapa para `conventional-commits`.
 ---
 
 # Generate Demand
@@ -73,14 +75,16 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 
 ## Output contract
 
-- Gerar **novo arquivo Markdown** em `agent-workspace/planejamento/`.
+- Gerar **novo arquivo Markdown** em `agent-workspace/`.
 - Não editar templates em `core/skills/generate-demand/templates/*`.
 - Os templates são read-only e servem como base para um novo arquivo.
 - Nome recomendado: `demanda-YYYYMMDD-HHMM-slug.md`.
 - O arquivo final MUST conter a seção `Contexto de execução da IA` preenchida.
 - O arquivo final MUST conter a seção `Planejamento da execução`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `demand-execution-planning`.
+- O arquivo final MUST conter a seção `Memorial de execução`, mas essa seção MUST ficar em branco na geração inicial da demanda.
 - O arquivo final MUST manter a seção `Sugestão de commit final`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `conventional-commits`.
 - Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `demand-execution-planning` para preencher ou revisar o planejamento da execução.
+- Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a preencher a seção `Memorial de execução` somente ao finalizar o atendimento ou a execução da demanda.
 - Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
 
 ## Template selection logic
@@ -108,6 +112,17 @@ Regras para esse handoff:
 - Não substituir a skill `demand-execution-planning` por planejamento manual dentro desta skill.
 - Ao finalizar, instruir explicitamente o próximo passo: usar `demand-execution-planning` sobre a demanda recém-gerada.
 
+## Execution memorial handoff
+
+Ao escolher qualquer template, a skill deve preservar a seção `Memorial de execução`, mas não deve preenchê-la durante a geração inicial da demanda.
+
+Regras para esse handoff:
+
+- Manter a seção `Memorial de execução` presente no arquivo final.
+- Deixar essa seção em branco na versão inicial da demanda.
+- Não registrar resumo de execução, arquivos alterados, impactos ou validações antes que o atendimento ou a execução tenham sido concluídos.
+- Ao finalizar a geração da demanda, instruir explicitamente que a seção `Memorial de execução` deve ser preenchida somente no encerramento do atendimento ou da execução.
+
 ## Commit handoff
 
 Quando o template incluir a seção `Sugestão de commit final`, a skill deve preservá-la, mas não deve propor a mensagem de commit diretamente.
@@ -115,7 +130,7 @@ Quando o template incluir a seção `Sugestão de commit final`, a skill deve pr
 Regras para esse handoff:
 
 - Manter a seção `Sugestão de commit final` presente no arquivo final.
-- Deixar essa seção em branco ou preencher apenas com uma observação curta, por exemplo: `> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.`
+- Preencher apenas com uma observação curta, por exemplo: `> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.`
 - Não escrever mensagem de commit candidata nesta skill.
 - Ao finalizar, instruir explicitamente o próximo passo: usar `conventional-commits` com base na demanda gerada e, se necessário, no diff final.
 
@@ -128,12 +143,14 @@ Regras para esse handoff:
 5. Preparar a seção `Planejamento da execução` apenas como placeholder para preenchimento posterior via `demand-execution-planning`.
 6. Preencher template preservando o sentido original.
 7. Preencher `Contexto de execução da IA` com referências obrigatórias.
-8. Manter `Planejamento da execução` vazio ou com uma observação curta de handoff para `demand-execution-planning`.
-9. Manter `Sugestão de commit final` vazia ou com uma observação curta de handoff para `conventional-commits`.
-10. Registrar suposições quando houver lacunas críticas.
-11. Salvar arquivo final em `agent-workspace/planejamento/`.
-12. Na resposta final, orientar o modelo a usar a skill `demand-execution-planning` na demanda gerada.
-13. Na resposta final, orientar o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
+8. Manter `Planejamento da execução` com uma observação curta de handoff para `demand-execution-planning`.
+9. Manter `Memorial de execução` em branco na versão inicial da demanda.
+10. Manter `Sugestão de commit final` vazia ou com uma observação curta de handoff para `conventional-commits`.
+11. Registrar suposições quando houver lacunas críticas.
+12. Salvar arquivo final em `agent-workspace/`.
+13. Na resposta final, orientar o modelo a usar a skill `demand-execution-planning` na demanda gerada.
+14. Na resposta final, orientar o modelo a preencher `Memorial de execução` apenas ao concluir o atendimento ou a execução.
+15. Na resposta final, orientar o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
 
 ## Quality rules
 
@@ -142,9 +159,11 @@ Regras para esse handoff:
 - Manter critérios de aceite verificáveis.
 - Usar exemplos de `generate-demand/exemplos/` apenas como base comparativa de estrutura e nível de detalhe, nunca como fonte de requisitos.
 - Em qualquer template, não preencher o planejamento da execução com conteúdo operacional; deixar apenas o placeholder ou a observação de handoff.
+- Em qualquer template, deixar `Memorial de execução` em branco na geração inicial da demanda.
 - Não preencher `Sugestão de commit final` com uma mensagem concreta; deixar apenas o placeholder ou a observação de handoff para `conventional-commits`.
 - Garantir que o arquivo final seja auto-suficiente para execução da IA.
 - Garantir que a resposta final indique explicitamente o uso da skill `demand-execution-planning` como próximo passo.
+- Garantir que a resposta final indique explicitamente que `Memorial de execução` só deve ser preenchido no encerramento do atendimento ou da execução.
 - Garantir que a resposta final indique explicitamente o uso da skill `conventional-commits` para a mensagem de commit.
 
 ## Final response format
@@ -153,5 +172,6 @@ Regras para esse handoff:
 - Caminho do arquivo gerado.
 - Referências de contexto aplicadas.
 - Encaminhamento aplicado para planejamento (`usar demand-execution-planning`).
+- Encaminhamento aplicado para memorial (`preencher ao final do atendimento/execução`).
 - Encaminhamento aplicado para commit (`usar conventional-commits`).
 - Suposições aplicadas (se houver).

@@ -24,6 +24,8 @@ Ajustar o texto do botão de limpeza do filtro no Explorer para usar a label `Li
 
 - Localizar o ponto exato em que a label do botão é renderizada no Explorer e substituir apenas o texto exibido por `Limpar filtro`, sem alterar comportamento, estilos ou handlers existentes.
 
+## Memorial de execução
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `fix(explorer): ajusta label do botão de limpar filtro`

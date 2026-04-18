@@ -23,7 +23,11 @@ Preencher antes de usar este template:
 
 ## Planejamento da Execução
 
-- Descreva suscintamente o que será feito para executar a demanda.
+- Descrição suscinta do que será feito para executar a demanda.
+
+## Memorial de execução
+
+- Resumo da execução + lista de arquivos alterados + validações recomendadas
 
 ## Sugestão de commit final
 

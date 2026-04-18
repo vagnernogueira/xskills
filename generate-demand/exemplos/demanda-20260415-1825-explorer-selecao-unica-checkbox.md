@@ -67,6 +67,8 @@ Restaurar a coerência entre seleção lógica e seleção visual da tabela do E
 
 implementação
 
+## Memorial de execução
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `fix(explorer): corrige seleção única visual nos checkboxes`
