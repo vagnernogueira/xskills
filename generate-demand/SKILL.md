@@ -52,6 +52,21 @@ Guia rápido de seleção:
 | `templates/03-compact.md` | Bugfixes e melhorias pequenas com critérios de aceite explícitos e planejamento de execução definido. |
 | `templates/04-full.md` | Demandas complexas, multi-etapas ou com maior risco de regressão, com planejamento de execução detalhado. |
 
+## Comparative examples
+
+Se o modelo precisar de uma base comparativa para calibrar estrutura, granularidade ou escolha de template, ele SHOULD consultar os exemplos disponíveis em `generate-demand/exemplos/`.
+
+Mapeamento recomendado:
+
+| Template | Exemplo comparativo |
+| --- | --- |
+| `templates/01-simple.md` | `generate-demand/exemplos/demanda-20260418-0116-limpeza-filtro-explorer.md` |
+| `templates/02-ultra-compact.md` | `generate-demand/exemplos/demanda-20260318-2130-header-editor-para-componente.md` |
+| `templates/03-compact.md` | `generate-demand/exemplos/demanda-20260415-1825-explorer-selecao-unica-checkbox.md` |
+| `templates/04-full.md` | `generate-demand/exemplos/demanda-20260416-0321-backup-geral-explorer.md` |
+
+Esses exemplos são apenas referência de forma e densidade de informação. A skill MUST preservar o escopo da demanda recebida e não copiar conteúdo que introduza requisitos inexistentes.
+
 ## Output contract
 
 - Gerar **novo arquivo Markdown** em `agent-workspace/planejamento/`.
@@ -92,18 +107,20 @@ Regras para esse planejamento:
 1. Extrair intenção principal da demanda bruta.
 2. Avaliar complexidade (escopo, risco, dependências, impacto em contrato público).
 3. Selecionar template adequado.
-4. Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, elaborar o planejamento da execução com etapas ou fases enumeradas; usar agente de planejamento se disponível no ambiente.
-5. Preencher template preservando o sentido original.
-6. Preencher `Contexto de execução da IA` com referências obrigatórias.
-7. Preencher `Planejamento da execução` quando aplicável.
-8. Registrar suposições quando houver lacunas críticas.
-9. Salvar arquivo final em `agent-workspace/planejamento/`.
+4. Se houver dúvida de estrutura, granularidade ou aderência ao template, consultar o exemplo comparativo correspondente em `generate-demand/exemplos/`.
+5. Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, elaborar o planejamento da execução com etapas ou fases enumeradas; usar agente de planejamento se disponível no ambiente.
+6. Preencher template preservando o sentido original.
+7. Preencher `Contexto de execução da IA` com referências obrigatórias.
+8. Preencher `Planejamento da execução` quando aplicável.
+9. Registrar suposições quando houver lacunas críticas.
+10. Salvar arquivo final em `agent-workspace/planejamento/`.
 
 ## Quality rules
 
 - Não inventar requisitos.
 - Não expandir escopo com melhorias paralelas.
 - Manter critérios de aceite verificáveis.
+- Usar exemplos de `generate-demand/exemplos/` apenas como base comparativa de estrutura e nível de detalhe, nunca como fonte de requisitos.
 - Quando usar os templates 3 ou 4, garantir que o planejamento da execução esteja claro, enumerado e acionável.
 - Garantir que o arquivo final seja auto-suficiente para execução da IA.
 
