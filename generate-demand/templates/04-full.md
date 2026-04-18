@@ -9,7 +9,7 @@ Preencher antes de usar este template:
 - Regras do projeto: [path]
 - Contexto do projeto: [path]
 - Workflow base: [path]
-- Overrides aplicáveis (se houver): [path1, path2]
+- Overrides aplicáveis (se houver; remova esta linha se não houver overrides aplicáveis): [path1, path2]
 - Contrato de saída: [path]
 
 ## Demanda
@@ -70,7 +70,7 @@ Preencher antes de usar este template:
 
 ## Tipo de saída esperada
 
-[análise | plano | implementação | revisão]
+[análise | implementação | revisão]
 
 ## Memorial de execução
 

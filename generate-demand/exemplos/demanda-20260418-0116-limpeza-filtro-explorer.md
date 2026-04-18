@@ -7,7 +7,6 @@
 - Regras do projeto: `_docs/ia-context/project-overlay/rules.md`
 - Contexto do projeto: `_docs/ia-context/project-overlay/context.md`
 - Workflow base: `_docs/ia-context/core/workflow.md`
-- Overrides aplicáveis (se houver): `_docs/ia-context/project-overlay/workflow-overrides.md`
 - Contrato de saída: `_docs/ia-context/core/output-contracts.md`
 
 ## Instruções

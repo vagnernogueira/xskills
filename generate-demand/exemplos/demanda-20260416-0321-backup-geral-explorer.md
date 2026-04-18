@@ -2,12 +2,11 @@
 
 ## Contexto de execução da IA
 
-- Pacote de contexto: _docs/ia-context/
+- Pacote de contexto: _docs/ia-context/README.md
 - Regras globais: _docs/ia-context/core/rules.md
 - Regras do projeto: _docs/ia-context/project-overlay/rules.md
 - Contexto do projeto: _docs/ia-context/project-overlay/context.md
 - Workflow base: _docs/ia-context/core/workflow.md
-- Overrides aplicáveis (se houver): _docs/ia-context/project-overlay/workflow-overrides.md
 - Contrato de saída: _docs/ia-context/core/output-contracts.md
 
 ## Demanda
