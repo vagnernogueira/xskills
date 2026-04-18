@@ -5,7 +5,9 @@ description: >-
    template adequado e gera o arquivo em agent-workspace/planejamento/. Use
    quando o usuário pedir para transformar notas soltas, briefings incompletos
    ou pedidos informais em uma demanda formal, inclusive com frases como "faça
-   uma demanda", "estruture isso" ou "organize o pedido".
+   uma demanda", "estruture isso" ou "organize o pedido". Quando a demanda
+   exigir planejamento da execução, a skill deve encaminhar essa etapa para
+   `demand-execution-planning`.
 ---
 
 # Generate Demand
@@ -49,8 +51,8 @@ Guia rápido de seleção:
 | --- | --- |
 | `templates/01-simple.md` | Ajustes rápidos, tarefas curtas e baixo risco. |
 | `templates/02-ultra-compact.md` | Demandas diretas com escopo claro e poucos arquivos-alvo. |
-| `templates/03-compact.md` | Bugfixes e melhorias pequenas com critérios de aceite explícitos e planejamento de execução definido. |
-| `templates/04-full.md` | Demandas complexas, multi-etapas ou com maior risco de regressão, com planejamento de execução detalhado. |
+| `templates/03-compact.md` | Bugfixes e melhorias pequenas com critérios de aceite explícitos e seção reservada para planejamento da execução. |
+| `templates/04-full.md` | Demandas complexas, multi-etapas ou com maior risco de regressão, com seção reservada para planejamento da execução posterior. |
 
 ## Comparative examples
 
@@ -74,7 +76,8 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 - Os templates são read-only e servem como base para um novo arquivo.
 - Nome recomendado: `demanda-YYYYMMDD-HHMM-slug.md`.
 - O arquivo final MUST conter a seção `Contexto de execução da IA` preenchida.
-- Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, o arquivo final MUST conter a seção `Planejamento da execução` preenchida com etapas ou fases enumeradas.
+- Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, o arquivo final MUST conter a seção `Planejamento da execução`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `demand-execution-planning`.
+- Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `demand-execution-planning` para preencher ou revisar o planejamento da execução.
 
 ## Template selection logic
 
@@ -83,24 +86,23 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 2. `core/skills/generate-demand/templates/02-ultra-compact.md`
    - Tarefa direta com escopo claro e poucos arquivos-alvo.
 3. `core/skills/generate-demand/templates/03-compact.md`
-   - Bugfix/melhoria pequena com critérios de aceite, suposições e planejamento de execução.
+   - Bugfix/melhoria pequena com critérios de aceite, suposições e seção reservada para planejamento de execução posterior.
 4. `core/skills/generate-demand/templates/04-full.md`
-   - Demanda complexa, multi-etapas, integração entre módulos ou maior risco, exigindo planejamento de execução mais detalhado.
+   - Demanda complexa, multi-etapas, integração entre módulos ou maior risco, exigindo seção reservada para planejamento de execução posterior.
 
 Fallback: em dúvida entre dois níveis, escolher o template mais completo.
 
-## Planning behavior for templates 3 and 4
+## Planning handoff for templates 3 and 4
 
-Ao escolher `templates/03-compact.md` ou `templates/04-full.md`, a skill não deve apenas estruturar a demanda: ela também deve planejar a execução.
+Ao escolher `templates/03-compact.md` ou `templates/04-full.md`, a skill deve estruturar a demanda, mas não deve elaborar o planejamento da execução.
 
-Regras para esse planejamento:
+Regras para esse handoff:
 
-- Preencher a seção `Planejamento da execução` com etapas ou fases concretas, em ordem lógica de execução.
-- Enumerar as etapas de forma explícita no conteúdo final.
-- Manter o planejamento dentro do escopo solicitado, sem adicionar entregas paralelas.
-- Se houver um agente de planejamento disponível no ambiente de IA, ele SHOULD ser usado para propor ou refinar as etapas antes de gravar o arquivo final.
-- Se esse agente não estiver disponível, a própria skill MUST elaborar o planejamento com base na demanda recebida.
-- O planejamento deve ser suficiente para orientar a execução posterior da demanda por outra IA ou agente executor.
+- Manter a seção `Planejamento da execução` presente no arquivo final.
+- Deixar essa seção em branco ou preencher apenas com uma observação curta, por exemplo: `> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.`
+- Não antecipar etapas, fases ou estratégias detalhadas nessa skill.
+- Não substituir a skill `demand-execution-planning` por planejamento manual dentro desta skill.
+- Ao finalizar, instruir explicitamente o próximo passo: usar `demand-execution-planning` sobre a demanda recém-gerada.
 
 ## Steps
 
@@ -108,12 +110,13 @@ Regras para esse planejamento:
 2. Avaliar complexidade (escopo, risco, dependências, impacto em contrato público).
 3. Selecionar template adequado.
 4. Se houver dúvida de estrutura, granularidade ou aderência ao template, consultar o exemplo comparativo correspondente em `generate-demand/exemplos/`.
-5. Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, elaborar o planejamento da execução com etapas ou fases enumeradas; usar agente de planejamento se disponível no ambiente.
+5. Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, preparar a seção `Planejamento da execução` apenas como placeholder para preenchimento posterior via `demand-execution-planning`.
 6. Preencher template preservando o sentido original.
 7. Preencher `Contexto de execução da IA` com referências obrigatórias.
-8. Preencher `Planejamento da execução` quando aplicável.
+8. Quando aplicável, manter `Planejamento da execução` vazio ou com uma observação curta de handoff para `demand-execution-planning`.
 9. Registrar suposições quando houver lacunas críticas.
 10. Salvar arquivo final em `agent-workspace/planejamento/`.
+11. Na resposta final, orientar o modelo a usar a skill `demand-execution-planning` na demanda gerada.
 
 ## Quality rules
 
@@ -121,13 +124,14 @@ Regras para esse planejamento:
 - Não expandir escopo com melhorias paralelas.
 - Manter critérios de aceite verificáveis.
 - Usar exemplos de `generate-demand/exemplos/` apenas como base comparativa de estrutura e nível de detalhe, nunca como fonte de requisitos.
-- Quando usar os templates 3 ou 4, garantir que o planejamento da execução esteja claro, enumerado e acionável.
+- Quando usar os templates 3 ou 4, não preencher o planejamento da execução com conteúdo operacional; deixar apenas o placeholder ou a observação de handoff.
 - Garantir que o arquivo final seja auto-suficiente para execução da IA.
+- Garantir que a resposta final indique explicitamente o uso da skill `demand-execution-planning` como próximo passo.
 
 ## Final response format
 
 - Template escolhido + motivo.
 - Caminho do arquivo gerado.
 - Referências de contexto aplicadas.
-- Estratégia de planejamento aplicada (`agente de planejamento` ou `planejamento manual pela skill`).
+- Encaminhamento aplicado para planejamento (`usar demand-execution-planning`).
 - Suposições aplicadas (se houver).
