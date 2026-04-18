@@ -9,7 +9,7 @@ Preencher antes de usar este template:
 - Regras do projeto: [path]
 - Contexto do projeto: [path]
 - Workflow base: [path]
-- Overrides de workflow (se houver): [path]
+- Overrides aplicáveis (se houver): [path1, path2]
 - Contrato de saída: [path]
 
 ## Demanda
@@ -42,10 +42,7 @@ Preencher antes de usar este template:
 
 ## Planejamento da execução
 
-- Etapa 1: [descreva a primeira etapa ou tarefa]
-- Etapa 2: [descreva a segunda etapa ou tarefa]
-- Etapa 3: [descreva a terceira etapa ou tarefa]
-- Etapa 4: [descreva a quarta etapa ou tarefa]
+> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
 
 ## Critérios de aceite
 
@@ -77,8 +74,8 @@ Preencher antes de usar este template:
 
 ## Memorial de execução
 
-- Descrição da execução + lista de arquivos alterados + impactos identificados ou esperados + validações executadas + validações recomendadas
+> Memorial pendente. Ao final da execução ou atendimento da demanda, adicione a descrição da execução, a lista de arquivos alterados, os impactos identificados ou esperados, as validações executadas e as validações recomendadas.
 
 ## Sugestão de commit final
 
-- Mensagem sugerida: `[feat|fix|chore|refactor](escopo): descrição curta da alteração final`
+> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.

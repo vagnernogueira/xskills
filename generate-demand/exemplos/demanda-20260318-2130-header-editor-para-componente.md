@@ -7,7 +7,7 @@
 - Regras do projeto: `_docs/ia-context/project-overlay/rules.md`
 - Contexto do projeto: `_docs/ia-context/project-overlay/context.md`
 - Workflow base: `_docs/ia-context/core/workflow.md`
-- Overrides de workflow: `_docs/ia-context/project-overlay/workflow-overrides.md`
+- Overrides aplicáveis (se houver): `_docs/ia-context/project-overlay/workflow-overrides.md`
 - Contrato de saída: `_docs/ia-context/core/output-contracts.md`
 
 ## Entrada mínima
@@ -39,14 +39,14 @@
 
 - **Tipo de saída:** implementação
 
-## Planejamento da Execução
+## Planejamento da execução
 
-- Mapear quais dados e eventos o `<header>` atual consome em `Editor.vue` para transformá-los em props e emits do novo `EditorHeader.vue`.
-- Extrair a marcação para o novo componente preservando a estrutura visual, os utilitários existentes e o padrão já adotado em `EditorToolbar.vue`.
-- Substituir o bloco inline em `Editor.vue`, conectar o novo componente e validar que o comportamento responsivo e o evento `edit-profile` permanecem iguais.
+> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
 
 ## Memorial de execução
 
+> Memorial pendente. Ao final da execução ou atendimento da demanda, adicione o resumo da execução, a lista de arquivos alterados e as validações recomendadas.
+
 ## Sugestão de commit final
 
-- Mensagem sugerida: `refactor(editor): extrai header para componente dedicado`
+> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.
