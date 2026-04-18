@@ -20,6 +20,10 @@
 
 Ajustar o texto do botão de limpeza do filtro no Explorer para usar a label `Limpar filtro` em vez do texto atual, preservando o comportamento existente do clique e sem alterar layout, ícone, atalhos ou qualquer outra ação do componente. A mudança deve ficar restrita ao frontend e apenas ao ponto em que a label é renderizada.
 
+## Planejamento da Execução
+
+- Localizar o ponto exato em que a label do botão é renderizada no Explorer e substituir apenas o texto exibido por `Limpar filtro`, sem alterar comportamento, estilos ou handlers existentes.
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `fix(explorer): ajusta label do botão de limpar filtro`

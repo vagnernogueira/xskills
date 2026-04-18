@@ -21,6 +21,10 @@ Preencher antes de usar este template:
 - Critérios de aceite: [critério 1, critério 2]
 - Tipo de saída: [análise | implementação | revisão]
 
+## Planejamento da Execução
+
+- Descreva suscintamente o que será feito para executar a demanda.
+
 ## Sugestão de commit final
 
 - Mensagem sugerida: `[feat|fix|chore|refactor](escopo): descrição curta da alteração final`

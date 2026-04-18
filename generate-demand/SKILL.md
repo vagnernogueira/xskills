@@ -5,8 +5,9 @@ description: >-
    template adequado e gera o arquivo em agent-workspace/planejamento/. Use
    quando o usuário pedir para transformar notas soltas, briefings incompletos
    ou pedidos informais em uma demanda formal, inclusive com frases como "faça
-   uma demanda", "estruture isso" ou "organize o pedido". Quando a demanda
-   exigir planejamento da execução, a skill deve encaminhar essa etapa para
+   uma demanda", "estruture isso" ou "organize o pedido". Como a seção de
+   planejamento da execução é canônica em todos os templates, a skill deve
+   encaminhar o preenchimento ou a revisão dessa etapa para a skill
    `demand-execution-planning`. Quando houver seção de sugestão de commit, a
    skill deve encaminhar essa etapa para `conventional-commits`.
 ---
@@ -52,8 +53,8 @@ Guia rápido de seleção:
 | --- | --- |
 | `templates/01-simple.md` | Ajustes rápidos, tarefas curtas e baixo risco. |
 | `templates/02-ultra-compact.md` | Demandas diretas com escopo claro e poucos arquivos-alvo. |
-| `templates/03-compact.md` | Bugfixes e melhorias pequenas com critérios de aceite explícitos e seção reservada para planejamento da execução. |
-| `templates/04-full.md` | Demandas complexas, multi-etapas ou com maior risco de regressão, com seção reservada para planejamento da execução posterior. |
+| `templates/03-compact.md` | Bugfixes e melhorias pequenas com critérios de aceite explícitos. |
+| `templates/04-full.md` | Demandas complexas, multi-etapas ou com maior risco de regressão. |
 
 ## Comparative examples
 
@@ -77,7 +78,7 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 - Os templates são read-only e servem como base para um novo arquivo.
 - Nome recomendado: `demanda-YYYYMMDD-HHMM-slug.md`.
 - O arquivo final MUST conter a seção `Contexto de execução da IA` preenchida.
-- Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, o arquivo final MUST conter a seção `Planejamento da execução`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `demand-execution-planning`.
+- O arquivo final MUST conter a seção `Planejamento da execução`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `demand-execution-planning`.
 - O arquivo final MUST manter a seção `Sugestão de commit final`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `conventional-commits`.
 - Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `demand-execution-planning` para preencher ou revisar o planejamento da execução.
 - Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
@@ -89,15 +90,15 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 2. `core/skills/generate-demand/templates/02-ultra-compact.md`
    - Tarefa direta com escopo claro e poucos arquivos-alvo.
 3. `core/skills/generate-demand/templates/03-compact.md`
-   - Bugfix/melhoria pequena com critérios de aceite, suposições e seção reservada para planejamento de execução posterior.
+   - Bugfix/melhoria pequena com critérios de aceite e suposições explícitas.
 4. `core/skills/generate-demand/templates/04-full.md`
-   - Demanda complexa, multi-etapas, integração entre módulos ou maior risco, exigindo seção reservada para planejamento de execução posterior.
+   - Demanda complexa, multi-etapas, integração entre módulos ou maior risco.
 
 Fallback: em dúvida entre dois níveis, escolher o template mais completo.
 
-## Planning handoff for templates 3 and 4
+## Planning handoff for all templates
 
-Ao escolher `templates/03-compact.md` ou `templates/04-full.md`, a skill deve estruturar a demanda, mas não deve elaborar o planejamento da execução.
+Ao escolher qualquer template, a skill deve estruturar a demanda, mas não deve elaborar o planejamento da execução.
 
 Regras para esse handoff:
 
@@ -124,10 +125,10 @@ Regras para esse handoff:
 2. Avaliar complexidade (escopo, risco, dependências, impacto em contrato público).
 3. Selecionar template adequado.
 4. Se houver dúvida de estrutura, granularidade ou aderência ao template, consultar o exemplo comparativo correspondente em `generate-demand/exemplos/`.
-5. Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, preparar a seção `Planejamento da execução` apenas como placeholder para preenchimento posterior via `demand-execution-planning`.
+5. Preparar a seção `Planejamento da execução` apenas como placeholder para preenchimento posterior via `demand-execution-planning`.
 6. Preencher template preservando o sentido original.
 7. Preencher `Contexto de execução da IA` com referências obrigatórias.
-8. Quando aplicável, manter `Planejamento da execução` vazio ou com uma observação curta de handoff para `demand-execution-planning`.
+8. Manter `Planejamento da execução` vazio ou com uma observação curta de handoff para `demand-execution-planning`.
 9. Manter `Sugestão de commit final` vazia ou com uma observação curta de handoff para `conventional-commits`.
 10. Registrar suposições quando houver lacunas críticas.
 11. Salvar arquivo final em `agent-workspace/planejamento/`.
@@ -140,7 +141,7 @@ Regras para esse handoff:
 - Não expandir escopo com melhorias paralelas.
 - Manter critérios de aceite verificáveis.
 - Usar exemplos de `generate-demand/exemplos/` apenas como base comparativa de estrutura e nível de detalhe, nunca como fonte de requisitos.
-- Quando usar os templates 3 ou 4, não preencher o planejamento da execução com conteúdo operacional; deixar apenas o placeholder ou a observação de handoff.
+- Em qualquer template, não preencher o planejamento da execução com conteúdo operacional; deixar apenas o placeholder ou a observação de handoff.
 - Não preencher `Sugestão de commit final` com uma mensagem concreta; deixar apenas o placeholder ou a observação de handoff para `conventional-commits`.
 - Garantir que o arquivo final seja auto-suficiente para execução da IA.
 - Garantir que a resposta final indique explicitamente o uso da skill `demand-execution-planning` como próximo passo.
