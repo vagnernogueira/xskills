@@ -7,7 +7,8 @@ description: >-
    ou pedidos informais em uma demanda formal, inclusive com frases como "faça
    uma demanda", "estruture isso" ou "organize o pedido". Quando a demanda
    exigir planejamento da execução, a skill deve encaminhar essa etapa para
-   `demand-execution-planning`.
+   `demand-execution-planning`. Quando houver seção de sugestão de commit, a
+   skill deve encaminhar essa etapa para `conventional-commits`.
 ---
 
 # Generate Demand
@@ -77,7 +78,9 @@ Esses exemplos são apenas referência de forma e densidade de informação. A s
 - Nome recomendado: `demanda-YYYYMMDD-HHMM-slug.md`.
 - O arquivo final MUST conter a seção `Contexto de execução da IA` preenchida.
 - Se o template escolhido for `templates/03-compact.md` ou `templates/04-full.md`, o arquivo final MUST conter a seção `Planejamento da execução`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `demand-execution-planning`.
+- O arquivo final MUST manter a seção `Sugestão de commit final`, mas essa seção MUST ficar em branco ou conter apenas uma observação curta orientando o uso da skill `conventional-commits`.
 - Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `demand-execution-planning` para preencher ou revisar o planejamento da execução.
+- Ao concluir a geração da demanda, a resposta final MUST orientar explicitamente o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
 
 ## Template selection logic
 
@@ -104,6 +107,17 @@ Regras para esse handoff:
 - Não substituir a skill `demand-execution-planning` por planejamento manual dentro desta skill.
 - Ao finalizar, instruir explicitamente o próximo passo: usar `demand-execution-planning` sobre a demanda recém-gerada.
 
+## Commit handoff
+
+Quando o template incluir a seção `Sugestão de commit final`, a skill deve preservá-la, mas não deve propor a mensagem de commit diretamente.
+
+Regras para esse handoff:
+
+- Manter a seção `Sugestão de commit final` presente no arquivo final.
+- Deixar essa seção em branco ou preencher apenas com uma observação curta, por exemplo: `> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.`
+- Não escrever mensagem de commit candidata nesta skill.
+- Ao finalizar, instruir explicitamente o próximo passo: usar `conventional-commits` com base na demanda gerada e, se necessário, no diff final.
+
 ## Steps
 
 1. Extrair intenção principal da demanda bruta.
@@ -114,9 +128,11 @@ Regras para esse handoff:
 6. Preencher template preservando o sentido original.
 7. Preencher `Contexto de execução da IA` com referências obrigatórias.
 8. Quando aplicável, manter `Planejamento da execução` vazio ou com uma observação curta de handoff para `demand-execution-planning`.
-9. Registrar suposições quando houver lacunas críticas.
-10. Salvar arquivo final em `agent-workspace/planejamento/`.
-11. Na resposta final, orientar o modelo a usar a skill `demand-execution-planning` na demanda gerada.
+9. Manter `Sugestão de commit final` vazia ou com uma observação curta de handoff para `conventional-commits`.
+10. Registrar suposições quando houver lacunas críticas.
+11. Salvar arquivo final em `agent-workspace/planejamento/`.
+12. Na resposta final, orientar o modelo a usar a skill `demand-execution-planning` na demanda gerada.
+13. Na resposta final, orientar o modelo a usar a skill `conventional-commits` para sugerir a mensagem de commit.
 
 ## Quality rules
 
@@ -125,8 +141,10 @@ Regras para esse handoff:
 - Manter critérios de aceite verificáveis.
 - Usar exemplos de `generate-demand/exemplos/` apenas como base comparativa de estrutura e nível de detalhe, nunca como fonte de requisitos.
 - Quando usar os templates 3 ou 4, não preencher o planejamento da execução com conteúdo operacional; deixar apenas o placeholder ou a observação de handoff.
+- Não preencher `Sugestão de commit final` com uma mensagem concreta; deixar apenas o placeholder ou a observação de handoff para `conventional-commits`.
 - Garantir que o arquivo final seja auto-suficiente para execução da IA.
 - Garantir que a resposta final indique explicitamente o uso da skill `demand-execution-planning` como próximo passo.
+- Garantir que a resposta final indique explicitamente o uso da skill `conventional-commits` para a mensagem de commit.
 
 ## Final response format
 
@@ -134,4 +152,5 @@ Regras para esse handoff:
 - Caminho do arquivo gerado.
 - Referências de contexto aplicadas.
 - Encaminhamento aplicado para planejamento (`usar demand-execution-planning`).
+- Encaminhamento aplicado para commit (`usar conventional-commits`).
 - Suposições aplicadas (se houver).
