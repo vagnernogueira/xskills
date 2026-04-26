@@ -95,7 +95,11 @@ implementação
 
 ## Planejamento da execução
 
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+1. Ler `Explorer.vue`, `document-api.ts`, `export.ts`, `server.ts` e `sync.ts` para mapear o padrão de ações existentes: download por documento, autenticação por senha mestra e listagem de documentos reutilizável.
+2. Criar a rota/serviço no backend (em `server.ts` ou arquivo dedicado) para gerar o `.zip` com todos os documentos não vazios, preservando a hierarquia de paths como estrutura interna do arquivo e reaproveitando a leitura de conteúdo já disponível em `sync.ts`.
+3. Adicionar o botão de backup na toolbar de `Explorer.vue` e conectá-lo ao novo endpoint via `document-api.ts`, seguindo o padrão das demais ações do módulo e mantendo a proteção por senha mestra.
+4. Escrever testes de integração em `api.integration.test.ts` cobrindo composição do zip, exclusão de documentos vazios e preservação da hierarquia de paths; e testes unitários em `document-api.test.ts` cobrindo a nova ação do frontend.
+5. Validar end-to-end que o clique no botão gera e baixa o `.zip` correto, que documentos vazios estão ausentes, que documentos aninhados como `me/todo` aparecem com o caminho interno preservado e que a autenticação por senha mestra está ativa na nova rota.
 
 ## Memorial de execução
 

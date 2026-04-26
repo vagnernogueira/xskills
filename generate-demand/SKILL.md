@@ -8,11 +8,10 @@ description: >-
     preparar o pedido para outra IA ou agente executar. Esta skill escolhe o
     template correto em `templates/`, gera um novo arquivo em `agent-workspace/`,
     diretório relativo à raiz do repositório, preenche `Contexto de execução da
-    IA` e deixa handoffs explícitos para `demand-execution-planning` em
-    `Planejamento da execução`, para o preenchimento posterior de `Memorial de
-    execução` e para `conventional-commits` em `Sugestão de commit final`. Não
-    use para elaborar o planejamento em detalhe, implementar a demanda ou
-    revisar apenas uma demanda já pronta sem recriá-la.
+    IA` e `Planejamento da execução` (via subagente quando disponível, ou inline
+    quando não), e deixa handoffs explícitos para `Memorial de execução` e para
+    `conventional-commits` em `Sugestão de commit final`. Não use para
+    implementar a demanda ou revisar apenas uma demanda já pronta sem recriá-la.
 ---
 
 # Generate Demand
@@ -48,8 +47,6 @@ uma demanda formal.
 
 Não use esta skill como primeira opção nestes casos:
 
-- A demanda já existe em Markdown e o trabalho agora é só preencher ou revisar
-   `## Planejamento da execução`. Nesse caso, use `demand-execution-planning`.
 - O trabalho pedido é implementar a demanda, revisar código ou executar o plano.
 - O objetivo é apenas sugerir a mensagem de commit. Nesse caso, use
    `conventional-commits`.
@@ -66,8 +63,10 @@ Ao ativar esta skill, você MUST:
 2. escolher o menor template que comporte o caso sem perder contexto relevante;
 3. gerar uma nova demanda Markdown em `agent-workspace/`, relativo à raiz do
     repositório;
-4. preservar handoffs explícitos para planejamento, memorial e commit, sem
-    executar essas etapas dentro desta skill.
+4. preencher `Planejamento da execução` usando subagente quando disponível, ou
+    inline quando não disponível;
+5. preservar handoffs explícitos para memorial e commit, sem executar essas
+    etapas dentro desta skill.
 
 ## Referências obrigatórias
 
@@ -147,7 +146,8 @@ Regras obrigatórias:
 - `Contexto de execução da IA` MUST omitir referências de override quando não
    houver override existente e aplicável.
 - O arquivo final MUST HAVE a seção `Planejamento da execução` (posicionada após
-   `Critérios de aceite` e análise/implementação/revisão nos templates compact/full).
+   `Critérios de aceite` e análise/implementação/revisão nos templates compact/full)
+   preenchida com etapas acionáveis.
 - O arquivo final MUST HAVE a seção `Memorial de execução`.
 - O arquivo final MUST HAVE a seção `Sugestão de commit final`.
 - O arquivo final MUST preservar o objetivo real da demanda recebida, sem
@@ -169,22 +169,102 @@ Regras obrigatórias:
 
 Fallback: em dúvida entre dois níveis, escolher o template mais completo.
 
-## Handoff de planejamento
+## Planejamento integrado
 
-O planejamento existe para a próxima skill operar sobre uma demanda já pronta.
-Por isso, esta skill MUST estruturar a demanda, mas MUST NOT elaborar o plano de
-execução dentro dela.
+Esta skill MUST garantir que `Planejamento da execução` esteja preenchida com
+etapas acionáveis no arquivo final. O planejamento é executado logo após salvar
+o arquivo da demanda.
 
-Regras para esse handoff:
+### Se a ferramenta `Agent` estiver disponível
 
-- A seção `Planejamento da execução` MUST permanecer presente no arquivo final.
-- A seção MUST usar este placeholder para manter consistência entre templates:
-   `> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.`
-- Você MUST NOT antecipar etapas, fases, estratégias detalhadas ou validações de
-   execução dentro desta skill.
-- Você MUST NOT substituir `demand-execution-planning` por planejamento manual.
-- A resposta final MUST orientar explicitamente o uso de
-   `demand-execution-planning` como próximo passo.
+Após salvar o arquivo, MUST acionar um subagente `general-purpose` passando o
+caminho absoluto do arquivo gerado e as regras desta seção como prompt. O
+subagente MUST editar o arquivo in-place, substituindo o placeholder pelo
+planejamento real. Aguardar a conclusão antes de formatar a resposta final.
+
+Estrutura mínima do prompt ao subagente:
+
+```
+Preencha a seção `## Planejamento da execução` do arquivo <caminho absoluto>.
+
+Leia o arquivo inteiro antes de editar. Detecte o template e o tipo de saída.
+Siga as regras de planejamento abaixo. Edite o arquivo in-place, substituindo
+o placeholder pelo planejamento real. Preserve todas as demais seções intactas.
+
+[incluir as subseções "Regras de planejamento" desta skill como contexto]
+```
+
+### Se a ferramenta `Agent` não estiver disponível
+
+Preencher o planejamento diretamente nesta invocação, seguindo as regras
+abaixo, antes de formatar a resposta final.
+
+### Regras de planejamento
+
+#### Detecção de template
+
+- `simple`: possui `## Instruções`, `## Demanda` e `## Sugestão de commit final`.
+- `ultra-compact`: possui `## Entrada mínima` com campos curtos como `Demanda`,
+  `Objetivo`, `Escopo` e `Arquivos-alvo`.
+- `compact`: possui `## Objetivo`, `## Escopo`, `## Arquivos ou módulos-alvo` e
+  `## Critérios de aceite`.
+- `full`: possui seções adicionais como `## Restrições`,
+  `## Contexto técnico adicional` e `## Riscos conhecidos`.
+
+#### Critérios mínimos
+
+- Organizar as etapas em ordem lógica de execução.
+- Cada etapa deve começar com um verbo de ação claro.
+- Fazer referência a arquivos, módulos, fluxos ou critérios quando a demanda
+  já trouxer esses nomes.
+- Cobrir descoberta inicial, intervenção principal e validação final.
+- Refletir o `Tipo de saída` da demanda: análise, plano, implementação ou
+  revisão.
+- Permanecer estritamente dentro do escopo; não introduzir melhorias paralelas.
+
+#### Profundidade por complexidade
+
+- Demandas `simple` ou `ultra-compact`: normalmente 3 etapas curtas.
+- Demandas `compact`: normalmente 3 ou 4 etapas.
+- Demandas `full` ou multi-módulo: normalmente 4 a 6 etapas.
+
+#### Regras por tipo de saída
+
+- `análise`: priorizar leitura de contexto, comparação de evidências e síntese
+  de conclusões verificáveis.
+- `revisão`: priorizar inspeção do artefato atual, identificação de desvios e
+  validação dos ajustes.
+- `implementação`: priorizar mapeamento do estado atual, alteração mínima e
+  validação objetiva.
+- `plano`: decompor dependências, sequência de execução e checagens de saída.
+- Se o tipo não estiver explícito, inferir pelo conteúdo da demanda e garantir
+  pelo menos uma etapa final de validação ligada aos critérios de aceite.
+
+#### Ancoragem nos artefatos da demanda
+
+- Se a demanda tiver `Arquivos-alvo`, `Arquivos ou módulos-alvo` ou
+  `Arquivos ou módulos suspeitos`, citar esses artefatos em pelo menos 2 etapas
+  quando isso for natural para o caso.
+- Se a demanda trouxer padrões de referência (componente análogo, evento, prop,
+  rota, serviço ou contrato), reaproveitar esses nomes na etapa pertinente.
+
+#### Preservação estrutural
+
+- Em templates `ultra-compact`, `## Entrada mínima` é um bloco fechado. Não
+  inserir `## Planejamento da execução` entre campos irmãos desse bloco;
+  adicionar após o bloco completo.
+- Preservar a ordem interna de campos com marcadores.
+- Não mover seções existentes sem necessidade.
+
+#### Problemas comuns a evitar
+
+- Etapas genéricas como "fazer os ajustes necessários".
+- Etapas que repetem o texto da demanda sem ação concreta.
+- Etapas que ignoram nomes de arquivos, módulos, eventos ou contratos já
+  presentes na demanda.
+- Etapas que criam escopo novo, testes irrelevantes ou refatorações paralelas.
+- Planos muito longos para demandas pequenas.
+- Planos sem etapa final de validação ligada aos critérios de aceite.
 
 ## Handoff de memorial
 
@@ -236,13 +316,19 @@ Regras para esse handoff:
     necessário para manter a demanda executável.
 8. Preencher `Contexto de execução da IA` com as referências obrigatórias e com
     overrides existentes e aplicáveis, sem citar arquivos inexistentes.
-9. Inserir o handoff de `Planejamento da execução` sem antecipar etapas de
-    execução.
+9. Inserir o placeholder de `Planejamento da execução` no ponto adequado do
+    documento.
 10. Inserir o handoff de `Memorial de execução` compatível com o template.
 11. Inserir o handoff de `Sugestão de commit final` sem sugerir a mensagem.
-12. Validar que o documento final está auto-suficiente, coerente com o escopo e
-    salvo em `agent-workspace/`, relativo à raiz do repositório.
-13. Responder de forma curta e operacional, indicando os próximos handoffs.
+12. Salvar o arquivo em `agent-workspace/` e validar que está auto-suficiente e
+    coerente com o escopo.
+13. Verificar se a ferramenta `Agent` está disponível no harness atual:
+    - **Disponível**: acionar subagente `general-purpose` para preencher
+      `Planejamento da execução` conforme a seção "Planejamento integrado".
+      Aguardar conclusão do subagente antes de prosseguir.
+    - **Não disponível**: preencher `Planejamento da execução` inline, seguindo
+      as mesmas regras da seção "Planejamento integrado".
+14. Responder de forma curta e operacional, indicando os próximos handoffs.
 
 ## Checklist de qualidade
 
@@ -256,8 +342,8 @@ Regras para esse handoff:
    componentes já citados pelo usuário.
 - Você MUST citar overrides apenas quando eles existirem no repositório e forem
    aplicáveis à demanda.
-- Você MUST NOT preencher `Planejamento da execução` com conteúdo operacional;
-   deixe apenas o handoff.
+- Você MUST garantir que `Planejamento da execução` está preenchida com etapas
+   acionáveis ao final desta skill, seja via subagente ou inline.
 - Você MUST NOT preencher `Memorial de execução` com conteúdo de execução antes
    do encerramento do atendimento.
 - Você MUST NOT preencher `Sugestão de commit final` com uma mensagem concreta.
@@ -276,13 +362,14 @@ Antes de salvar, confirme mentalmente:
 
 ## Formato da resposta final
 
-Depois de gerar a demanda, a resposta final MUST seguir esta estrutura:
+Depois de gerar a demanda e preencher o planejamento, a resposta final MUST
+seguir esta estrutura:
 
 - `Template escolhido:` informar o template e o motivo curto da escolha.
 - `Arquivo gerado:` informar o caminho do arquivo salvo em `agent-workspace/`.
 - `Referências aplicadas:` listar as referências obrigatórias e os overrides
    existentes que foram incluídos.
-- `Handoff de planejamento:` indicar explicitamente `usar demand-execution-planning`.
+- `Planejamento:` indicar se foi preenchido via subagente ou inline.
 - `Handoff de memorial:` indicar explicitamente `preencher ao final do atendimento/execução`.
 - `Handoff de commit:` indicar explicitamente `usar conventional-commits`.
 - `Suposições aplicadas:` listar as suposições materiais; se não houver, dizer

@@ -40,7 +40,10 @@
 
 ## Planejamento da execução
 
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+1. Ler `Editor.vue` e mapear o bloco `<header>` inline: props consumidas, emits disparados, composables referenciados e classes CSS utilizadas.
+2. Criar `frontend/src/components/EditorHeader.vue` com as props `documentId`, `collaborators` e `status`, o emit `edit-profile` e o template extraído do bloco mapeado, sem acesso direto a composables.
+3. Substituir o bloco `<header>` inline em `Editor.vue` pelo uso de `<EditorHeader />`, adicionando o import e o registro do componente.
+4. Validar que o visual e o comportamento responsivo do header permanecem idênticos e que `Editor.vue` não contém mais o bloco `<header>` inline.
 
 ## Memorial de execução
 

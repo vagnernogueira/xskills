@@ -62,7 +62,9 @@ implementação
 
 ## Planejamento da execução
 
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+1. Ler `useDocumentList.ts` e `Explorer.vue` para entender como `selectedDocumentName` é mantido e como o estado dos checkboxes está vinculado a ele na tabela.
+2. Corrigir o binding do checkbox em `Explorer.vue` para que o valor derivado de `selectedDocumentName` controle exclusivamente qual item aparece marcado, garantindo que a troca de seleção desmarque visualmente o item anterior de forma imediata.
+3. Validar que selecionar um segundo item desmarca o anterior e que nenhuma outra funcionalidade do Explorer — busca, ordenação, renomeação ou exclusão — é afetada pela alteração.
 
 ## Memorial de execução
 

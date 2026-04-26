@@ -70,7 +70,7 @@ Preencher antes de usar este template:
 
 ## Planejamento da execução
 
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+> A preencher pela skill ao gerar a demanda.
 
 ## Memorial de execução
 
