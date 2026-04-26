@@ -59,10 +59,6 @@ Permitir que o usuário exporte, a partir do Explorer, um backup completo dos do
 - backend/src/__tests__/unit/document-content.unit.test.ts
 - frontend/src/__tests__/unit/document-api.test.ts
 
-## Planejamento da execução
-
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
-
 ## Critérios de aceite
 
 - Existe um novo botão no Explorer para acionar o backup geral.
@@ -97,10 +93,14 @@ Permitir que o usuário exporte, a partir do Explorer, um backup completo dos do
 
 implementação
 
+## Planejamento da execução
+
+> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+
 ## Memorial de execução
 
 > Memorial pendente. Ao final da execução ou atendimento da demanda, adicione a descrição da execução, a lista de arquivos alterados, os impactos identificados ou esperados, as validações executadas e as validações recomendadas.
 
-## Sugestão de commit final
+### Sugestão de commit final
 
 > Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.

@@ -27,6 +27,6 @@ Ajustar o texto do botão de limpeza do filtro no Explorer para usar a label `Li
 
 > Memorial pendente. Ao final da execução ou atendimento da demanda, adicione o resumo da execução, a lista de arquivos alterados e as validações recomendadas.
 
-## Sugestão de commit final
+### Sugestão de commit final
 
 > Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.

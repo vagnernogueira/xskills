@@ -146,8 +146,8 @@ Regras obrigatórias:
    acima e MAY acrescentar overrides existentes e aplicáveis.
 - `Contexto de execução da IA` MUST omitir referências de override quando não
    houver override existente e aplicável.
-- O arquivo final MUST HAVE a seção `Planejamento da execução` com exatamente o
-   heading `## Planejamento da execução`.
+- O arquivo final MUST HAVE a seção `Planejamento da execução` (posicionada após
+   `Critérios de aceite` e análise/implementação/revisão nos templates compact/full).
 - O arquivo final MUST HAVE a seção `Memorial de execução`.
 - O arquivo final MUST HAVE a seção `Sugestão de commit final`.
 - O arquivo final MUST preservar o objetivo real da demanda recebida, sem
@@ -212,7 +212,7 @@ skill MUST preservar a seção, mas MUST NOT propor a mensagem concreta.
 
 Regras para esse handoff:
 
-- A seção `Sugestão de commit final` MUST permanecer presente no arquivo final.
+- A seção `Sugestão de commit final` MUST permanecer presente no arquivo final (como `### Sugestão de commit final`).
 - A seção MUST usar este placeholder:
    `> Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.`
 - Você MUST NOT escrever uma mensagem de commit candidata nesta skill.

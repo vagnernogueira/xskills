@@ -40,10 +40,6 @@ Preencher antes de usar este template:
 - [path2]
 - [path3]
 
-## Planejamento da execução
-
-> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
-
 ## Critérios de aceite
 
 - [critério funcional 1]
@@ -72,10 +68,14 @@ Preencher antes de usar este template:
 
 [análise | implementação | revisão]
 
+## Planejamento da execução
+
+> Planejamento pendente. Use a skill demand-execution-planning para preencher ou revisar esta seção.
+
 ## Memorial de execução
 
 > Memorial pendente. Ao final da execução ou atendimento da demanda, adicione a descrição da execução, a lista de arquivos alterados, os impactos identificados ou esperados, as validações executadas e as validações recomendadas.
 
-## Sugestão de commit final
+### Sugestão de commit final
 
 > Mensagem de commit pendente. Use a skill conventional-commits para sugerir a mensagem final.
