@@ -68,7 +68,7 @@ implementação
 
 ## Memorial de execução
 
-> Memorial pendente. Ao final da execução ou atendimento da demanda, adicione o resumo da execução, a lista de arquivos alterados, os impactos identificados ou esperados, as validações executadas e as validações recomendadas.
+> Ao concluir a execução: informe o usuário em uma única frase que a demanda foi atendida; depois edite este arquivo, substituindo este bloco pelo memorial real com: resumo da execução, lista de arquivos alterados, validações recomendadas e observações (se houver).
 
 ### Sugestão de commit final
 
